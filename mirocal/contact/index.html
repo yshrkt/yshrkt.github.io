@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="title">Contact Us - MiroCal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .lang-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: 1px solid #d2d2d7;
+      background: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #1d1d1f;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    
+    .lang-btn:hover {
+      background: #f5f5f7;
+    }
+    
+    .lang-btn.active {
+      background: #0071e3;
+      border-color: #0071e3;
+      color: #ffffff;
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1d1d1f;
+    }
+    
+    .subtitle {
+      color: #86868b;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #1d1d1f;
+    }
+    
+    .required::after {
+      content: ' *';
+      color: #ff3b30;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      background-color: #fafafa;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #0071e3;
+      background-color: #ffffff;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 17px;
+      font-weight: 500;
+      color: #ffffff;
+      background-color: #0071e3;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .submit-btn:hover {
+      background-color: #0077ed;
+    }
+    
+    .submit-btn:active {
+      background-color: #006edb;
+    }
+    
+    .submit-btn:disabled {
+      background-color: #c7c7cc;
+      cursor: not-allowed;
+    }
+    
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 24px;
+      background-color: #34c759;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .success-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: #ffffff;
+    }
+    
+    .success-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1d1d1f;
+    }
+    
+    .success-text {
+      color: #86868b;
+      font-size: 15px;
+    }
+    
+    .hint {
+      font-size: 13px;
+      color: #86868b;
+      margin-top: 4px;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #d2d2d7;
+      font-size: 13px;
+      color: #86868b;
+    }
+    
+    .footer a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="../assets/AppIcon.png" alt="MiroCal" class="app-icon">
+      <div class="lang-toggle">
+        <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
+        <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">日本語</button>
+      </div>
+    </div>
+    
+    <div id="contact-form">
+      <h1 data-i18n="heading">お問い合わせ</h1>
+      <p class="subtitle" data-i18n="subtitle">MiroCalに関するご質問やご要望をお送りください。</p>
+      
+      <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSdhD-WDxBZO9fgnZsHlPdod0I_-r55IWMIeuXsJIh-cKpQZSA/formResponse" method="POST" target="hidden_iframe" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="entry.827035796" value="MiroCal">
+        
+        <div class="form-group">
+          <label for="email" class="required" data-i18n="labelEmail">メールアドレス</label>
+          <input type="email" id="email" name="emailAddress" required data-i18n-placeholder="placeholderEmail">
+          <p class="hint" data-i18n="hintEmail">返信先として使用します</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="name" data-i18n="labelName">お名前</label>
+          <input type="text" id="name" name="entry.190102671" data-i18n-placeholder="placeholderName">
+          <p class="hint" data-i18n="hintOptional">任意</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="device" data-i18n="labelDevice">デバイスの種類</label>
+          <input type="text" id="device" name="entry.1312881694" data-i18n-placeholder="placeholderDevice">
+          <p class="hint" data-i18n="hintDevice">ご利用のデバイスをお知らせください</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="os" data-i18n="labelOs">OSバージョン</label>
+          <input type="text" id="os" name="entry.1043616751" data-i18n-placeholder="placeholderOs">
+          <p class="hint" data-i18n="hintOs">ご利用のOSバージョンをお知らせください</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="message" class="required" data-i18n="labelMessage">お問い合わせ内容</label>
+          <textarea id="message" name="entry.585262482" required data-i18n-placeholder="placeholderMessage"></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn" data-i18n="submit">送信する</button>
+      </form>
+    </div>
+    
+    <div id="success-message" class="success-message">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+      </div>
+      <h2 class="success-title" data-i18n="successTitle">送信完了しました</h2>
+      <p class="success-text" data-i18n="successText">お問い合わせありがとうございます。<br>内容を確認後、返信いたします。</p>
+    </div>
+    
+    <div class="footer">
+      <p><span data-i18n="footerLabel">直接のご連絡はこちら:</span> <a href="mailto:support@sputnik-apps.com">support@sputnik-apps.com</a></p>
+    </div>
+  </div>
+  
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+  
+  <script>
+    const i18n = {
+      ja: {
+        title: 'お問い合わせ - MiroCal',
+        heading: 'お問い合わせ',
+        subtitle: 'MiroCalに関するご質問やご要望をお送りください。',
+        labelEmail: 'メールアドレス',
+        placeholderEmail: 'example@email.com',
+        hintEmail: '返信先として使用します',
+        labelName: 'お名前',
+        placeholderName: '山田 太郎',
+        hintOptional: '任意',
+        labelDevice: 'デバイスの種類',
+        placeholderDevice: '例: iPhone 16, iPad Pro',
+        hintDevice: 'ご利用のデバイスをお知らせください',
+        labelOs: 'OSバージョン',
+        placeholderOs: '例: iOS 18.3, iPadOS 18.3',
+        hintOs: 'ご利用のOSバージョンをお知らせください',
+        labelMessage: 'お問い合わせ内容',
+        placeholderMessage: 'お問い合わせ内容をご記入ください',
+        submit: '送信する',
+        successTitle: '送信完了しました',
+        successText: 'お問い合わせありがとうございます。<br>内容を確認後、返信いたします。',
+        footerLabel: '直接のご連絡はこちら:'
+      },
+      en: {
+        title: 'Contact Us - MiroCal',
+        heading: 'Contact Us',
+        subtitle: 'Please send us your questions or feedback about MiroCal.',
+        labelEmail: 'Email Address',
+        placeholderEmail: 'example@email.com',
+        hintEmail: 'Used for reply',
+        labelName: 'Name',
+        placeholderName: 'John Doe',
+        hintOptional: 'Optional',
+        labelDevice: 'Device Type',
+        placeholderDevice: 'e.g., iPhone 16, iPad Pro',
+        hintDevice: 'Please let us know your device',
+        labelOs: 'OS Version',
+        placeholderOs: 'e.g., iOS 18.3, iPadOS 18.3',
+        hintOs: 'Please let us know your OS version',
+        labelMessage: 'Message',
+        placeholderMessage: 'Please enter your message',
+        submit: 'Submit',
+        successTitle: 'Message Sent',
+        successText: 'Thank you for contacting us.<br>We will review your message and get back to you.',
+        footerLabel: 'Direct contact:'
+      }
+    };
+    
+    function switchLang(lang) {
+      const texts = i18n[lang];
+      document.documentElement.lang = lang;
+      
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (texts[key]) {
+          if (key === 'successText') {
+            el.innerHTML = texts[key];
+          } else {
+            el.textContent = texts[key];
+          }
+        }
+      });
+      
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (texts[key]) {
+          el.placeholder = texts[key];
+        }
+      });
+      
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState({}, '', url);
+    }
+    
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const device = params.get('device');
+      const os = params.get('os');
+      const lang = params.get('lang') || 'en';
+      
+      if (device) {
+        document.getElementById('device').value = decodeURIComponent(device);
+      }
+      if (os) {
+        document.getElementById('os').value = decodeURIComponent(os);
+      }
+      
+      switchLang(lang);
+    })();
+    
+    function handleSubmit(event) {
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
