@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - MiroCal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .lang-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: 1px solid #d2d2d7;
+      background: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #1d1d1f;
+      transition: background-color 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+    
+    .lang-btn:hover {
+      background: #f5f5f7;
+    }
+    
+    .lang-btn.active {
+      background: #0071e3;
+      border-color: #0071e3;
+      color: #ffffff;
+    }
+    
+    #content {
+      margin-top: 24px;
+    }
+    
+    #content strong {
+      display: block;
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: #1d1d1f;
+    }
+    
+    #content strong:first-child {
+      margin-top: 0;
+      font-size: 28px;
+    }
+    
+    #content p {
+      margin-bottom: 8px;
+      color: #1d1d1f;
+    }
+    
+    #content ul {
+      margin-left: 24px;
+      margin-bottom: 8px;
+    }
+    
+    #content li {
+      margin-bottom: 4px;
+    }
+    
+    #content hr {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      border: none;
+      border-top: 1px solid #d2d2d7;
+    }
+    
+    #content a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+    
+    #content a:hover {
+      text-decoration: underline;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #86868b;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="../assets/AppIcon.png" alt="MiroCal" class="app-icon">
+      <div class="lang-toggle">
+        <a href="?lang=en" class="lang-btn" data-lang="en">English</a>
+        <a href="?lang=ja" class="lang-btn" data-lang="ja">日本語</a>
+      </div>
+    </div>
+    
+    <div id="content">
+      <p class="loading">Loading...</p>
+    </div>
+  </div>
+  
+  <script>
+    async function loadContent(lang) {
+      try {
+        const response = await fetch(`${lang}.html`);
+        if (!response.ok) throw new Error('Failed to load content');
+        
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const bodyContent = doc.body.innerHTML;
+        
+        document.getElementById('content').innerHTML = bodyContent;
+        
+        if (lang === 'ja') {
+          document.documentElement.lang = 'ja';
+          document.title = 'プライバシーポリシー - MiroCal';
+        } else {
+          document.documentElement.lang = 'en';
+          document.title = 'Privacy Policy - MiroCal';
+        }
+      } catch (error) {
+        document.getElementById('content').innerHTML = '<p>Error loading content. Please try again.</p>';
+        console.error('Error loading content:', error);
+      }
+    }
+    
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const lang = params.get('lang') || 'en';
+      
+      loadContent(lang);
+      
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+    })();
+  </script>
+</body>
+</html>
