@@ -145,8 +145,8 @@
         <select id="lang-select" class="lang-select" aria-label="Language selector">
           <option value="en">English</option>
           <option value="ja">日本語</option>
-          <option value="zh-tw">繁體中文</option>
-          <option value="zh-cn">简体中文</option>
+          <option value="zh-Hant">繁體中文</option>
+          <option value="zh-Hans">简体中文</option>
           <option value="ko">한국어</option>
         </select>
       </div>
@@ -158,7 +158,16 @@
   </div>
   
   <script>
-    const supportedLanguages = ['en', 'ja', 'zh-tw', 'zh-cn', 'ko'];
+    const supportedLanguages = ['en', 'ja', 'zh-Hant', 'zh-Hans', 'ko'];
+    const legacyLanguageAliases = {
+      'zh-tw': 'zh-Hant',
+      'zh-cn': 'zh-Hans'
+    };
+
+    function normalizeLangCode(lang) {
+      const canonicalLang = legacyLanguageAliases[lang] || lang;
+      return supportedLanguages.includes(canonicalLang) ? canonicalLang : 'en';
+    }
 
     async function loadContent(lang) {
       try {
@@ -175,8 +184,8 @@
         const titleByLang = {
           en: 'Privacy Policy - MiroCal',
           ja: 'プライバシーポリシー - MiroCal',
-          'zh-tw': '隱私權政策 - MiroCal',
-          'zh-cn': '隐私政策 - MiroCal',
+          'zh-Hant': '隱私權政策 - MiroCal',
+          'zh-Hans': '隐私政策 - MiroCal',
           ko: '개인정보 처리방침 - MiroCal'
         };
         document.documentElement.lang = lang in titleByLang ? lang : 'en';
@@ -188,7 +197,7 @@
     }
 
     function switchLang(lang) {
-      const resolvedLang = supportedLanguages.includes(lang) ? lang : 'en';
+      const resolvedLang = normalizeLangCode(lang);
       const url = new URL(window.location);
       url.searchParams.set('lang', resolvedLang);
       window.history.replaceState({}, '', url);
@@ -204,7 +213,7 @@
     (function() {
       const params = new URLSearchParams(window.location.search);
       const langParam = params.get('lang') || 'en';
-      const lang = supportedLanguages.includes(langParam) ? langParam : 'en';
+      const lang = normalizeLangCode(langParam);
       
       const langSelect = document.getElementById('lang-select');
       if (langSelect) {

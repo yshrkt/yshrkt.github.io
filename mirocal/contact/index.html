@@ -235,8 +235,8 @@
         <select id="lang-select" class="lang-select" onchange="switchLang(this.value)" aria-label="Language selector">
           <option value="en">English</option>
           <option value="ja">日本語</option>
-          <option value="zh-tw">繁體中文</option>
-          <option value="zh-cn">简体中文</option>
+          <option value="zh-Hant">繁體中文</option>
+          <option value="zh-Hans">简体中文</option>
           <option value="ko">한국어</option>
         </select>
       </div>
@@ -347,7 +347,7 @@
         successText: 'Thank you for contacting us.<br>We will review your message and get back to you.',
         footerLabel: 'Direct contact:'
       },
-      'zh-tw': {
+      'zh-Hant': {
         title: '聯絡我們 - MiroCal',
         heading: '聯絡我們',
         subtitle: '請將您對 MiroCal 的問題或建議傳送給我們。',
@@ -370,7 +370,7 @@
         successText: '感謝您與我們聯絡。<br>我們將確認內容後回覆您。',
         footerLabel: '直接聯絡：'
       },
-      'zh-cn': {
+      'zh-Hans': {
         title: '联系我们 - MiroCal',
         heading: '联系我们',
         subtitle: '请把您对 MiroCal 的问题或建议发送给我们。',
@@ -417,9 +417,19 @@
         footerLabel: '직접 연락:'
       }
     };
+
+    const legacyLanguageAliases = {
+      'zh-tw': 'zh-Hant',
+      'zh-cn': 'zh-Hans'
+    };
+
+    function normalizeLangCode(lang) {
+      return legacyLanguageAliases[lang] || lang;
+    }
     
     function switchLang(lang) {
-      const resolvedLang = i18n[lang] ? lang : 'en';
+      const normalizedLang = normalizeLangCode(lang);
+      const resolvedLang = i18n[normalizedLang] ? normalizedLang : 'en';
       const texts = i18n[resolvedLang];
       document.documentElement.lang = resolvedLang;
       
