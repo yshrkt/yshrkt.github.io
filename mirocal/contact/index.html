@@ -45,28 +45,35 @@
     
     .lang-toggle {
       display: flex;
-      gap: 8px;
+      align-items: center;
     }
     
-    .lang-btn {
-      padding: 6px 12px;
+    .lang-select {
+      min-width: 96px;
+      padding: 6px 28px 6px 10px;
       font-size: 13px;
       border: 1px solid #d2d2d7;
       background: #ffffff;
       border-radius: 6px;
       cursor: pointer;
       color: #1d1d1f;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: border-color 0.2s, background-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #86868b 50%), linear-gradient(135deg, #86868b 50%, transparent 50%);
+      background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
     }
     
-    .lang-btn:hover {
+    .lang-select:hover {
       background: #f5f5f7;
     }
     
-    .lang-btn.active {
-      background: #0071e3;
+    .lang-select:focus {
+      outline: none;
       border-color: #0071e3;
-      color: #ffffff;
+      background-color: #ffffff;
     }
     
     h1 {
@@ -225,8 +232,13 @@
     <div class="header">
       <img src="../assets/AppIcon.png" alt="MiroCal" class="app-icon">
       <div class="lang-toggle">
-        <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
-        <button class="lang-btn" data-lang="ja" onclick="switchLang('ja')">日本語</button>
+        <select id="lang-select" class="lang-select" onchange="switchLang(this.value)" aria-label="Language selector">
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="zh-tw">繁體中文</option>
+          <option value="zh-cn">简体中文</option>
+          <option value="ko">한국어</option>
+        </select>
       </div>
     </div>
     
@@ -334,12 +346,82 @@
         successTitle: 'Message Sent',
         successText: 'Thank you for contacting us.<br>We will review your message and get back to you.',
         footerLabel: 'Direct contact:'
+      },
+      'zh-tw': {
+        title: '聯絡我們 - MiroCal',
+        heading: '聯絡我們',
+        subtitle: '請將您對 MiroCal 的問題或建議傳送給我們。',
+        labelEmail: '電子郵件地址',
+        placeholderEmail: 'example@email.com',
+        hintEmail: '將用於回覆您',
+        labelName: '姓名',
+        placeholderName: '王小明',
+        hintOptional: '選填',
+        labelDevice: '裝置類型',
+        placeholderDevice: '例如：iPhone 16、iPad Pro',
+        hintDevice: '請告訴我們您使用的裝置',
+        labelOs: 'OS 版本',
+        placeholderOs: '例如：iOS 18.3、iPadOS 18.3',
+        hintOs: '請告訴我們您的 OS 版本',
+        labelMessage: '訊息內容',
+        placeholderMessage: '請輸入您的訊息內容',
+        submit: '送出',
+        successTitle: '已送出訊息',
+        successText: '感謝您與我們聯絡。<br>我們將確認內容後回覆您。',
+        footerLabel: '直接聯絡：'
+      },
+      'zh-cn': {
+        title: '联系我们 - MiroCal',
+        heading: '联系我们',
+        subtitle: '请把您对 MiroCal 的问题或建议发送给我们。',
+        labelEmail: '邮箱地址',
+        placeholderEmail: 'example@email.com',
+        hintEmail: '将用于回复您',
+        labelName: '姓名',
+        placeholderName: '张三',
+        hintOptional: '选填',
+        labelDevice: '设备类型',
+        placeholderDevice: '例如：iPhone 16、iPad Pro',
+        hintDevice: '请告诉我们您使用的设备',
+        labelOs: 'OS 版本',
+        placeholderOs: '例如：iOS 18.3、iPadOS 18.3',
+        hintOs: '请告诉我们您的 OS 版本',
+        labelMessage: '消息内容',
+        placeholderMessage: '请输入您的消息内容',
+        submit: '提交',
+        successTitle: '发送成功',
+        successText: '感谢您的联系。<br>我们会查看您的消息并尽快回复。',
+        footerLabel: '直接联系：'
+      },
+      ko: {
+        title: '문의하기 - MiroCal',
+        heading: '문의하기',
+        subtitle: 'MiroCal에 대한 질문이나 의견을 보내주세요.',
+        labelEmail: '이메일 주소',
+        placeholderEmail: 'example@email.com',
+        hintEmail: '회신용으로 사용됩니다',
+        labelName: '이름',
+        placeholderName: '홍길동',
+        hintOptional: '선택 사항',
+        labelDevice: '기기 종류',
+        placeholderDevice: '예: iPhone 16, iPad Pro',
+        hintDevice: '사용 중인 기기를 알려주세요',
+        labelOs: 'OS 버전',
+        placeholderOs: '예: iOS 18.3, iPadOS 18.3',
+        hintOs: '사용 중인 OS 버전을 알려주세요',
+        labelMessage: '문의 내용',
+        placeholderMessage: '문의 내용을 입력해 주세요',
+        submit: '보내기',
+        successTitle: '전송 완료',
+        successText: '문의해 주셔서 감사합니다.<br>내용을 확인한 후 답변드리겠습니다.',
+        footerLabel: '직접 연락:'
       }
     };
     
     function switchLang(lang) {
-      const texts = i18n[lang];
-      document.documentElement.lang = lang;
+      const resolvedLang = i18n[lang] ? lang : 'en';
+      const texts = i18n[resolvedLang];
+      document.documentElement.lang = resolvedLang;
       
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -359,12 +441,13 @@
         }
       });
       
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-      });
+      const langSelect = document.getElementById('lang-select');
+      if (langSelect) {
+        langSelect.value = resolvedLang;
+      }
       
       const url = new URL(window.location);
-      url.searchParams.set('lang', lang);
+      url.searchParams.set('lang', resolvedLang);
       window.history.replaceState({}, '', url);
     }
     
